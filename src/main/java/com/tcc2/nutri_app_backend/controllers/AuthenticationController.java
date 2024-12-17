@@ -40,9 +40,8 @@ public class AuthenticationController {
         }
     }
 
-
     @PostMapping("/register")
-    public ResponseEntity registerNutritionist(@RequestBody @Valid RegisterDTO data) {
+    public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
         if(this.repository.findByUsername(data.username()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
