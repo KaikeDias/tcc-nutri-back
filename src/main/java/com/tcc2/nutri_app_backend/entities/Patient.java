@@ -2,16 +2,13 @@ package com.tcc2.nutri_app_backend.entities;
 
 import com.tcc2.nutri_app_backend.enums.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class Patient extends User {
     @ManyToOne
     @JoinColumn(name = "nutritionist_id", nullable = false)
@@ -23,5 +20,9 @@ public class Patient extends User {
     public Patient(String username, String password, String email, String phone, String cpf, Nutritionist nutritionist) {
         super(username, password, email, phone, cpf, Role.PATIENT);
         this.nutritionist = nutritionist;
+    }
+
+    public Patient() {
+        super(null, null, null, null, null, Role.PATIENT);
     }
 }
