@@ -2,10 +2,7 @@ package com.tcc2.nutri_app_backend.entities;
 
 import com.tcc2.nutri_app_backend.enums.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,17 +13,22 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String username;
-    private String email;
-    private String password;
+    protected String username;
+    protected String email;
+    protected String password;
+    protected String name;
+    protected String phone;
+    protected String cpf;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -40,10 +42,19 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+    public User(String username, String password, String email, String phone, String cpf, Role role) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.cpf = cpf;
+        this.role = role;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == Role.NUTRITIONIST) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if(this.role == Role.NUTRITIONIST) return List.of(new SimpleGrantedAuthority("ROLE_NUTRITIONIST"), new SimpleGrantedAuthority("ROLE_PATIENT"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_PATIENT"));
     }
 
     @Override
