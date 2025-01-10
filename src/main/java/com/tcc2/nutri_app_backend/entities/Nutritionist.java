@@ -1,5 +1,6 @@
 package com.tcc2.nutri_app_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tcc2.nutri_app_backend.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,6 +14,7 @@ import java.util.UUID;
 public class Nutritionist extends User {
     private String crn;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "nutritionist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Patient> patients;
 

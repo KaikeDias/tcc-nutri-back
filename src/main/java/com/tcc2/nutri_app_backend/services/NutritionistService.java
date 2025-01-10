@@ -2,13 +2,17 @@ package com.tcc2.nutri_app_backend.services;
 
 import com.tcc2.nutri_app_backend.entities.DTOs.NutritionistDTO;
 import com.tcc2.nutri_app_backend.entities.Nutritionist;
+import com.tcc2.nutri_app_backend.entities.Patient;
 import com.tcc2.nutri_app_backend.repositories.NutritionistRepository;
+import com.tcc2.nutri_app_backend.repositories.PatientRepository;
 import com.tcc2.nutri_app_backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 public class NutritionistService {
@@ -17,6 +21,8 @@ public class NutritionistService {
     private NutritionistRepository nutritionistRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PatientRepository patientRepository;
 
     public void createNutritionist(NutritionistDTO nutritionistDTO) {
         if(userRepository.findByUsername(nutritionistDTO.username()) != null) {
@@ -41,5 +47,12 @@ public class NutritionistService {
         Nutritionist nutritionist = nutritionistRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Username not found"));
 
         return nutritionist;
+    }
+
+    public List<Patient> findPatientsByNutritionist(String username) {
+        Nutritionist nutritionist = getNutritionistByUsername(username);
+        List<Patient> patients = nutritionist.getPatients();
+
+        return patients;
     }
 }
