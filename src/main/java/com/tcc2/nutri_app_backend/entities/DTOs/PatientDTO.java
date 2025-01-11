@@ -1,6 +1,7 @@
 package com.tcc2.nutri_app_backend.entities.DTOs;
 
 public record PatientDTO(
+        String id,
         String username,
         String email,
         String password,
