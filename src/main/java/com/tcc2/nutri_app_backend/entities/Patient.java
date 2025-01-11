@@ -1,5 +1,6 @@
 package com.tcc2.nutri_app_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tcc2.nutri_app_backend.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Setter
 public class Patient extends User {
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "nutritionist_id", nullable = false)
     private Nutritionist nutritionist;
 
