@@ -1,6 +1,7 @@
 package com.tcc2.nutri_app_backend.services;
 
 import com.tcc2.nutri_app_backend.entities.DTOs.NutritionistDTO;
+import com.tcc2.nutri_app_backend.entities.DTOs.PatientDTO;
 import com.tcc2.nutri_app_backend.entities.Nutritionist;
 import com.tcc2.nutri_app_backend.entities.Patient;
 import com.tcc2.nutri_app_backend.repositories.NutritionistRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class NutritionistService {
@@ -49,10 +51,27 @@ public class NutritionistService {
         return nutritionist;
     }
 
-    public List<Patient> findPatientsByNutritionist(String username) {
+    public List<PatientDTO> convertPatientsToDTOs(List<Patient> patients) {
+        return patients.stream()
+                .map(patient -> new PatientDTO(
+                        patient.getId().toString(),
+                        patient.getUsername(),
+                        patient.getEmail(),
+                        patient.getPassword(),
+                        patient.getName(),
+                        patient.getPhone(),
+                        patient.getCpf()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public List<PatientDTO> findPatientsByNutritionist(String username) {
         Nutritionist nutritionist = getNutritionistByUsername(username);
         List<Patient> patients = nutritionist.getPatients();
 
-        return patients;
+
+        return convertPatientsToDTOs(patients);
     }
+
+
 }
