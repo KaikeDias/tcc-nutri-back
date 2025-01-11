@@ -46,13 +46,10 @@ public class SecurityConfigurations {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/nutritionists/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/patients/*").hasRole("NUTRITIONIST")
-                        .requestMatchers(HttpMethod.POST, "/menus/**").hasRole("NUTRITIONIST")
-                        .requestMatchers(HttpMethod.POST, "/teste").hasRole("NUTRITIONIST")
-                        .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/nutritionists/register").permitAll()
+                        .anyRequest().hasRole("NUTRITIONIST")
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
