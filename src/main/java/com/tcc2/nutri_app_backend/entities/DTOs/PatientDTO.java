@@ -7,6 +7,7 @@ public record PatientDTO(
         String password,
         String name,
         String phone,
-        String cpf
+        String cpf,
+        String menuID
 ) {
 }

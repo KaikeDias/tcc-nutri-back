@@ -4,6 +4,7 @@ import com.tcc2.nutri_app_backend.entities.DTOs.CreatePatientDTO;
 import com.tcc2.nutri_app_backend.entities.DTOs.NutritionistDTO;
 import com.tcc2.nutri_app_backend.entities.DTOs.PatientDTO;
 import com.tcc2.nutri_app_backend.entities.Nutritionist;
+import com.tcc2.nutri_app_backend.entities.Patient;
 import com.tcc2.nutri_app_backend.services.NutritionistService;
 import com.tcc2.nutri_app_backend.services.PatientService;
 import jakarta.validation.Valid;
@@ -69,5 +70,13 @@ public class NutritionistController {
         patientService.editPatient(data);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/patients/{id}")
+    public ResponseEntity<PatientDTO> getPatient(@PathVariable UUID id) {
+        Patient patient = patientService.getPatientById(id);
+        PatientDTO patientDTO = patientService.convertPatientToDTO(patient);
+
+        return ResponseEntity.ok(patientDTO);
     }
 }

@@ -84,4 +84,13 @@ public class MenuService {
 
         return food.getSubstitutions();
     }
+
+    public void deleteMeal(UUID menuId, UUID mealId) {
+        Menu menu = getById(menuId);
+        List<Meal> meals = menu.getMeals();
+
+        meals.removeIf(meal -> meal.getId().equals(mealId));
+
+        menuRepository.save(menu);
+    }
 }
