@@ -60,7 +60,8 @@ public class NutritionistService {
                         patient.getPassword(),
                         patient.getName(),
                         patient.getPhone(),
-                        patient.getCpf()
+                        patient.getCpf(),
+                        patient.getMenu().getId().toString()
                 ))
                 .collect(Collectors.toList());
     }
