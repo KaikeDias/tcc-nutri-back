@@ -1,5 +1,6 @@
 package com.tcc2.nutri_app_backend.services;
 
+import com.tcc2.nutri_app_backend.entities.DTOs.CreatePatientDTO;
 import com.tcc2.nutri_app_backend.entities.DTOs.PatientDTO;
 import com.tcc2.nutri_app_backend.entities.Nutritionist;
 import com.tcc2.nutri_app_backend.entities.Patient;
@@ -22,7 +23,7 @@ public class PatientService {
     @Autowired
     private NutritionistService nutritionistService;
 
-    public void createPatient(PatientDTO patientDTO, String username) {
+    public void createPatient(CreatePatientDTO patientDTO, String username) {
         if(userRepository.findByUsername(patientDTO.username()) != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already in use");
         }
@@ -46,5 +47,27 @@ public class PatientService {
         Patient patient = patientRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Username not found"));
 
         return patient;
+    }
+
+    public Patient getPatientById(UUID id) {
+        Patient patient = patientRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found"));
+
+        return patient;
+    }
+
+    public void editPatient(PatientDTO patientDTO) {
+        Patient patient = getPatientById(UUID.fromString(patientDTO.id()));
+
+        patient.setUsername(patientDTO.username());
+        patient.setEmail(patientDTO.email());
+        patient.setName(patientDTO.name());
+        patient.setPhone(patientDTO.phone());
+        patient.setCpf(patientDTO.cpf());
+
+        patientRepository.save(patient);
+    }
+
+    public void deletePatient(UUID id) {
+        patientRepository.deleteById(id);
     }
 }

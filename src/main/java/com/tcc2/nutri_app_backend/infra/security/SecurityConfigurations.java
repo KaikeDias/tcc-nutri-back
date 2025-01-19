@@ -49,10 +49,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/nutritionists/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/patients/*").hasRole("NUTRITIONIST")
-                        .requestMatchers(HttpMethod.POST, "/menus/**").hasRole("NUTRITIONIST")
-                        .requestMatchers(HttpMethod.POST, "/teste").hasRole("NUTRITIONIST")
-                        .anyRequest().authenticated()
+                        .anyRequest().hasRole("NUTRITIONIST")
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
