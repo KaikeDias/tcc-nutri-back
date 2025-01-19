@@ -5,6 +5,7 @@ import com.tcc2.nutri_app_backend.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +19,11 @@ public class Patient extends User {
 
     @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
     private Menu menu;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "patient_id")
+    private List<Guideline> guidelines;
 
     public Patient(String username, String password, String email, String phone, String cpf, Nutritionist nutritionist) {
         super(username, password, email, phone, cpf, Role.PATIENT);
