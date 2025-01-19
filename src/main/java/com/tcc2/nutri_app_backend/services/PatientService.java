@@ -55,6 +55,21 @@ public class PatientService {
         return patient;
     }
 
+    public PatientDTO convertPatientToDTO(Patient patient) {
+        PatientDTO dto = new PatientDTO(
+                patient.getId().toString(),
+                patient.getUsername(),
+                patient.getEmail(),
+                patient.getPassword(),
+                patient.getName(),
+                patient.getPhone(),
+                patient.getCpf(),
+                patient.getMenu().getId().toString()
+        );
+
+        return dto;
+    }
+
     public void editPatient(PatientDTO patientDTO) {
         Patient patient = getPatientById(UUID.fromString(patientDTO.id()));
 
