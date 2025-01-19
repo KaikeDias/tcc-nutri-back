@@ -56,4 +56,11 @@ public class MenuController {
 
         return ResponseEntity.ok(substitutions);
     }
+
+    @DeleteMapping("/{menuId}/meals/{mealId}")
+    public ResponseEntity deleteMeal(@PathVariable UUID menuId, @PathVariable UUID mealId) {
+        menuService.deleteMeal(menuId, mealId);
+
+        return  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
