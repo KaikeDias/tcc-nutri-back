@@ -24,6 +24,7 @@ public class TokenService  {
             String token = JWT.create()
                     .withIssuer("nutri-app")
                     .withSubject(user.getUsername())
+                    .withClaim("id", user.getId().toString())
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
 
