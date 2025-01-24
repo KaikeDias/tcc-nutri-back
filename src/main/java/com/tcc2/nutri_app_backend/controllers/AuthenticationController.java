@@ -1,11 +1,11 @@
 package com.tcc2.nutri_app_backend.controllers;
 
-import com.tcc2.nutri_app_backend.entities.DTOs.AuthenticationDTO;
-import com.tcc2.nutri_app_backend.entities.DTOs.LoginResponseDTO;
-import com.tcc2.nutri_app_backend.entities.DTOs.RegisterDTO;
+import com.tcc2.nutri_app_backend.entities.DTOs.*;
+import com.tcc2.nutri_app_backend.entities.Patient;
 import com.tcc2.nutri_app_backend.entities.User;
 import com.tcc2.nutri_app_backend.infra.security.TokenService;
 import com.tcc2.nutri_app_backend.repositories.UserRepository;
+import com.tcc2.nutri_app_backend.services.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +25,8 @@ public class AuthenticationController {
     private UserRepository repository;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private PatientService patientService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
@@ -35,6 +37,25 @@ public class AuthenticationController {
             var token = tokenService.generateToken((User) auth.getPrincipal());
 
             return ResponseEntity.ok(new LoginResponseDTO(token));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @PostMapping("/patients/login")
+    public ResponseEntity patientLogin(@RequestBody @Valid AuthenticationDTO data){
+        try {
+            var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
+            var auth = this.authenticationManager.authenticate(usernamePassword);
+
+            User user = (User) auth.getPrincipal();
+            var token = tokenService.generateToken(user);
+
+            Patient patient = patientService.getPatientById(user.getId());
+            PatientDTO patientDTO = patientService.convertPatientToDTO(patient);
+            PatientLoginDTO response = new PatientLoginDTO(token, patientDTO);
+
+            return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             throw new RuntimeException(e.getMessage());
         }
