@@ -48,7 +48,11 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/patients/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/nutritionists/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/menus/{menuId}/meals").hasRole("PATIENT")
+                        .requestMatchers(HttpMethod.GET, "/menus/meals/{foodID}/substitutions").hasRole("PATIENT")
+                        .requestMatchers(HttpMethod.GET, "/guidelines/patients/{patientId}").hasRole("PATIENT")
                         .anyRequest().hasRole("NUTRITIONIST")
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
