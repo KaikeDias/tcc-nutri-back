@@ -42,7 +42,7 @@ public class DocumentController {
         return ResponseEntity.ok(document);
     }
 
-    @GetMapping("/patient/{patientId}")
+    @GetMapping("/patients/{patientId}")
     public ResponseEntity<List<DocumentDAO>> getDocumentsByPatient(@PathVariable UUID patientId) {
         List<DocumentDAO> documents = documentService.getDocumentsByPatientId(patientId);
         return ResponseEntity.ok(documents);
