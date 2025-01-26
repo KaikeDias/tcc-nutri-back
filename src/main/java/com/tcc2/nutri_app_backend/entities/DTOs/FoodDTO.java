@@ -6,6 +6,8 @@ public record FoodDTO(
         String name,
         String quantity,
         String unit,
+        String homeQuantity,
+        String homeUnit,
         List<FoodDTO> substitutions
 ) {
 }
