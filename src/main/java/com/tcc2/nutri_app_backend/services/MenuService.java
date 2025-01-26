@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -44,12 +45,15 @@ public class MenuService {
 
         Meal newMeal = new Meal();
         newMeal.setTitle(mealDTO.title());
+        newMeal.setMealTime(mealDTO.mealTime());
 
         List<Food> aliments = mealDTO.aliments().stream().map(alimentDTO -> {
             Food food = new Food();
             food.setName(alimentDTO.name());
             food.setQuantity(alimentDTO.quantity());
             food.setUnit(alimentDTO.unit());
+            food.setHomeQuantity(alimentDTO.homeQuantity());
+            food.setHomeUnit(alimentDTO.homeUnit());
 
             if (alimentDTO.substitutions() != null) {
                 List<Food> substitutions = alimentDTO.substitutions().stream().map(substitutionDTO -> {
@@ -57,6 +61,8 @@ public class MenuService {
                     substitution.setName(substitutionDTO.name());
                     substitution.setQuantity(substitutionDTO.quantity());
                     substitution.setUnit(substitutionDTO.unit());
+                    substitution.setHomeQuantity(substitutionDTO.homeQuantity());
+                    substitution.setHomeUnit(substitutionDTO.homeUnit());
                     return substitution;
                 }).collect(Collectors.toList());
                 food.setSubstitutions(substitutions);
@@ -75,6 +81,8 @@ public class MenuService {
 
     public List<Meal> getMeals(UUID menuID) {
         Menu menu = getById(menuID);
+        List<Meal> meals = menu.getMeals();
+        meals.sort(Comparator.comparing(Meal::getMealTime));
 
         return menu.getMeals();
     }

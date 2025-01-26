@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,4 +23,6 @@ public class Meal {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "meal_id")
     private List<Food> aliments;
+
+    private LocalTime mealTime;
 }

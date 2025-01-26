@@ -48,4 +48,11 @@ public class DocumentController {
         return ResponseEntity.ok(documents);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Document> deleteDocument(@PathVariable UUID id) {
+        documentService.deleteDocument(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

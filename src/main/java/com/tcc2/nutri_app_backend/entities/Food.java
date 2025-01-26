@@ -21,6 +21,8 @@ public class Food {
     private String name;
     private String quantity;
     private String unit;
+    private String homeQuantity;
+    private String homeUnit;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
