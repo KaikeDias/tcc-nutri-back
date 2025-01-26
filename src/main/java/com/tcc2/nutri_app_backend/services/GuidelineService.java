@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,6 +33,7 @@ public class GuidelineService {
 
     public List<Guideline> getAllGuidelinesByPatient(UUID patientID) {
         List<Guideline> guidelines = guidelineRepoistory.findAllByPatientId(patientID);
+        guidelines.sort(Comparator.comparing(Guideline::getCreatedAt));
 
         return guidelines;
     }
