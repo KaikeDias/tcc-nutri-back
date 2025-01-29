@@ -64,7 +64,9 @@ public class PatientService {
                 patient.getName(),
                 patient.getPhone(),
                 patient.getCpf(),
-                patient.getMenu().getId().toString()
+                patient.getMenu().getId().toString(),
+                patient.getForm().getId().toString(),
+                patient.getWaterGoal().getId().toString()
         );
 
         return dto;

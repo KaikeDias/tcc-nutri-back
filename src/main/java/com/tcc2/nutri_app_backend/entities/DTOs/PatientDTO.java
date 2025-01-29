@@ -8,6 +8,8 @@ public record PatientDTO(
         String name,
         String phone,
         String cpf,
-        String menuID
+        String menuID,
+        String formID,
+        String waterGoalID
 ) {
 }
