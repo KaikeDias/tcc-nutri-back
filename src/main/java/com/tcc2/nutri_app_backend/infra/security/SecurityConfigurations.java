@@ -59,6 +59,8 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.GET, "/waterGoals/{id}").hasRole("PATIENT")
                         .requestMatchers(HttpMethod.GET, "/forms/patients/{patientId}").hasRole("PATIENT")
                         .requestMatchers(HttpMethod.PUT, "/forms/questions/answers").hasRole("PATIENT")
+                        .requestMatchers(HttpMethod.GET, "/dietEntries/patients/{patientId}").hasRole("PATIENT")
+                        .requestMatchers(HttpMethod.GET, "/dietEntries/{id}").hasRole("PATIENT")
                         .anyRequest().hasRole("NUTRITIONIST")
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

@@ -6,6 +6,7 @@ import com.tcc2.nutri_app_backend.entities.Meal;
 import com.tcc2.nutri_app_backend.entities.Menu;
 import com.tcc2.nutri_app_backend.entities.Patient;
 import com.tcc2.nutri_app_backend.repositories.FoodRepository;
+import com.tcc2.nutri_app_backend.repositories.MealRepository;
 import com.tcc2.nutri_app_backend.repositories.MenuRepository;
 import com.tcc2.nutri_app_backend.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class MenuService {
     private PatientService patientService;
     @Autowired
     private FoodRepository foodRepository;
+    @Autowired
+    private MealRepository mealRepository;
 
     public void createMenu(String username) {
         Patient patient = patientService.getPatientByUsername(username);
@@ -77,6 +80,12 @@ public class MenuService {
         menu.setMeals(meals);
 
         menuRepository.save(menu);
+    }
+
+    public Meal getMealById(UUID mealID) {
+        Meal meal = mealRepository.findById(mealID).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Meal not found"));
+
+        return meal;
     }
 
     public List<Meal> getMeals(UUID menuID) {
