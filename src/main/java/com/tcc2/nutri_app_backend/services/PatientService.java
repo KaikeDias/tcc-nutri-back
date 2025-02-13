@@ -1,11 +1,10 @@
 package com.tcc2.nutri_app_backend.services;
 
+import com.tcc2.nutri_app_backend.entities.*;
 import com.tcc2.nutri_app_backend.entities.DTOs.CreatePatientDTO;
 import com.tcc2.nutri_app_backend.entities.DTOs.PatientDTO;
-import com.tcc2.nutri_app_backend.entities.Nutritionist;
-import com.tcc2.nutri_app_backend.entities.Patient;
-import com.tcc2.nutri_app_backend.repositories.PatientRepository;
-import com.tcc2.nutri_app_backend.repositories.UserRepository;
+import com.tcc2.nutri_app_backend.entities.DTOs.WaterGoalDTO;
+import com.tcc2.nutri_app_backend.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,6 +21,12 @@ public class PatientService {
     private UserRepository userRepository;
     @Autowired
     private NutritionistService nutritionistService;
+    @Autowired
+    private MenuRepository menuRepository;
+    @Autowired
+    private FormRepository formRepository;
+    @Autowired
+    private WaterGoalRepository waterGoalRepository;
 
     public void createPatient(CreatePatientDTO patientDTO, String username) {
         if(userRepository.findByUsername(patientDTO.username()) != null) {
@@ -41,6 +46,40 @@ public class PatientService {
         patient.setCpf(patientDTO.cpf());
 
         patientRepository.save(patient);
+
+        createMenu(patient.getUsername());
+
+        Patient newPatient = getPatientByUsername(patient.getUsername());
+
+        createForm(newPatient.getId());
+
+        createWaterGoal(newPatient.getId());
+    }
+
+    public void createForm(UUID patientId) {
+        Patient patient = getPatientById(patientId);
+
+        Form form = new Form();
+        form.setPatient(patient);
+
+        formRepository.save(form);
+    }
+
+
+    public void createMenu(String username) {
+        Patient patient = getPatientByUsername(username);
+
+        Menu menu = new Menu();
+        menu.setPatient(patient);
+        menuRepository.save(menu);
+    }
+
+    public void createWaterGoal(UUID patientId) {
+        Patient patient = getPatientById(patientId);
+        WaterGoal waterGoal = new WaterGoal();
+        waterGoal.setPatient(patient);
+
+        waterGoalRepository.save(waterGoal);
     }
 
     public Patient getPatientByUsername(String username) {
